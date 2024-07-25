@@ -1,10 +1,28 @@
-.card-container {
-    width: 100%;
-    position: relative;
-    height: 357px;
-    text-align: left;
-    font-size: 11px;
-    color: #000;
-    font-family: Inter;
-    display: inline-box;
+.cards-container {
+    display: flex;
+    justify-content: center;
 }
+
+.cards {
+    width: 1700px;
+    position: absolute;
+    font-family: Inter;
+    display: flex;
+    justify-content: space-around;
+    top: 400px;
+}
+
+.buttons-container {
+    position: absolute;
+    top: 1000px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.buttons {
+    width: 600px;
+    display: flex;
+    justify-content: space-around;
+}
+
