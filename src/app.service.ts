@@ -46,7 +46,10 @@ export class AppService {
 
 		const patents = await this.keywordSearch(sanitizedQuery)
 
-		return patents
+		
+		const result = await this.selectPatents(patents, issue);
+
+		return result;
 	}
 
 	async splitString(
@@ -60,7 +63,7 @@ export class AppService {
 		const baseUrl =
 			'http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getWordSearch'
 		const url1 = '?word=' + keyword
-    const url2 = '&numOfRows=50'
+    	const url2 = '&numOfRows=50'
 		const url3 = '&ServiceKey=' + this.apiKey
 
 		const url = baseUrl + url1 + url2 + url3
@@ -72,24 +75,24 @@ export class AppService {
 
 		const body = dictType.response.body[0]
 
-    const result = {
-      solutions: []
-    };
-    console.log(result);
+    	const result = {
+      	solutions: []
+    	};
+    	console.log(result);
 
-    const itemCount = body.items[0].item.length;
-    console.log(itemCount);
+    	const itemCount = body.items[0].item.length;
+    	console.log(itemCount);
 
-    for(let i=0; i < Math.min(50, itemCount); i++){
-      const item = body.items[0].item[i];
-      result.solutions.push({
-        inventionTitle: item.inventionTitle[0],
-        applicationDate: item.applicationDate[0],
-        applicantName: item.applicantName[0],
-        explanation: item.astrtCont[0], //일단 초록.
-        url: item.applicationNumber[0], //일단 출원번호. 출원번호로 url 가져오기.
-      });
-    }
+    	for(let i=0; i < Math.min(50, itemCount); i++){
+      		const item = body.items[0].item[i];
+	      	result.solutions.push({
+	        inventionTitle: item.inventionTitle[0],
+    	    applicationDate: item.applicationDate[0],
+        	applicantName: item.applicantName[0],
+	        explanation: item.astrtCont[0], //일단 초록.
+			url: await this.getFullTextPDF(item.applicationNumber[0]),	//출원번호로 url 가져오기
+	      });
+    	}
 
 		return result
 	}
@@ -133,6 +136,43 @@ export class AppService {
     else {
       throw new Error(`Unexpected response: ${response}`);
     }
+  }
+
+  //출원번호 받아서 공개전문PDF URL 반환
+  async getFullTextPDF(applicationNumber: string){
+	const baseUrl = "http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getPubFullTextInfoSearch";
+	const url1 = "?applicationNumber="+ applicationNumber;
+	const url2 = "&ServiceKey=" + this.apiKey;
+	const url = baseUrl + url1 + url2;
+
+	const response = await lastValueFrom(this.httpService.get(url));
+	const content = response.data;
+	const dictType = await parseStringPromise(content);
+	const body = dictType.response.body[0];
+
+	const pdf_URL = String(body.item[0].path);
+
+	return pdf_URL;
+  }
+
+  async selectPatents(patents, issue: string){
+	const solutionCount = patents.solutions.length;
+	console.log(`Number of solutions: ${solutionCount}`);
+	
+	const finalResult = {
+		solutions: []
+	};
+
+	for(let i=0; i < Math.min(50, solutionCount); i++){
+		if(
+			await this.isProper(patents.solutions[i].explanation, issue)
+		){
+			finalResult.solutions.push(patents.solutions[i]);
+		}
+	}
+
+	console.log(finalResult.solutions.length);
+	return finalResult;
   }
 
 }
