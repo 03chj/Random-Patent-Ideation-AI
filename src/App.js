@@ -1,14 +1,20 @@
 import './App.css';
-import { Result } from './screen/Result/Result'
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Search from './screen/Search/Search';
+import Loading from './screen/Loading/Loading';
+import { Result } from './screen/Result/Result';
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path='/' element={<Result/>}/>
-        <Route path='/search' element={<Result/>}/>
-      </Routes>
+      <div>
+        <Routes>
+          <Route path="/" element={<Search />} />
+          <Route path="/loading" element={<Loading />} />
+          <Route path="/result" element={<Result />} />
+        </Routes>
+      </div>
     </Router>
   );
 }
