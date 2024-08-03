@@ -11,6 +11,7 @@ function App() {
     <Router>
       <div>
         <Routes>
+          <Route path="/" element={<Search />} />
           <Route path="/search" element={<Search />} />
           <Route path="/loading" element={<Loading />} />
           <Route path="/result" element={<Result />} />

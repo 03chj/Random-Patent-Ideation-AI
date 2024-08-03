@@ -1,12 +1,14 @@
 .cards-container {
     display: flex;
     justify-content: center;
+    max-width: 100%;
+    max-height: fit-content;
 }
 
 .cards {
     width: 1700px;
     position: absolute;
-    font-family: Inter;
+    font-family: 'Inter', sans-serif;
     display: flex;
     justify-content: space-around;
     top: 400px;
