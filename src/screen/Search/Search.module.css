@@ -1,111 +1,120 @@
 /* src/screen/Search/Search.module.css */
-.contentLogo {
-    aspect-ratio: 1.15;
-    object-fit: contain;
-    object-position: center;
-    align-self: center;
-    max-width: 100%;
-    margin-bottom: 20px;
-}
 
 .search {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100%;
     width: 100%;
+    height: 100%;
 }
 
 .content {
-    align-items: center;
-    justify-content: center;
     display: flex;
-    margin-top: 178px;
-    width: 100%;
     flex-direction: column;
-    font-family: Roboto, sans-serif;
-    font-weight: 400;
-    line-height: 1.4;   
+    align-items: center;
+    width: 100%;
+    margin-top: 178px;
+}
+
+.contentText {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    }
+
+.contentLogo {
+    margin-bottom: 20px; 
+    align-self: center;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: center;
+    width: 100px;
+    height: 100px;
+}
+
+
+.infoSection {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; 
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.searchBar {
+    width: 100%; 
+}
+
+.description {
+    align-items: center;
+    display: flex;
+    max-width: 70%;
+    gap: 0;
+    width: 100%;
+    /* justify-content: space-between; */
+    flex-wrap: wrap;
+    /* padding: 12px 16px; */
+    align-self: center;
+    border: none;
+    margin-left: 30px;
 }
 
 .textWrapper {
-    color: #000000;
-    font-size: 14px;
+    align-self: stretch;
+    flex: 1;
+    flex-basis: 0%;
     font-weight: 400;
-    /* left: 24px;
-    line-height: 19.6px;
-    position: relative;
-    top: 15px; */
+    font-size: 14px;
+    align-items: center;
+    display: flex;
+    max-width: 70%;
+    width: 100%;
+    gap: 8px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-self: center;
     white-space: nowrap;
-    width: 481px;
-    letter-spacing: 0;
-    align-self: flex-start;
-    margin-left: 20px;
-    margin-bottom: 20px;
+}
+
+
+.alignmentContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 10px;
+    /* align-self: center; */
 }
 
 .line {
-    height: 1px;
-    left: 24px;
-    object-fit: cover;
-    position: relative;
-    top: 5px;
-    width: 48px;
-    margin-right: 10px;
+    margin-bottom: 3px; 
+
 }
+
 
 .div {
     color: #ba3636;
     font-size: 12px;
     font-weight: 400;
-
     letter-spacing: 0;
-
     white-space: nowrap;
     display: flex;
     align-items: center;
+    text-align: center;
 }
 
 .div2 {
     color: #4936bb;
     font-size: 12px;
     font-weight: 400;
-
     letter-spacing: 0;
-
     white-space: nowrap;
     display: flex;
     align-items: center;
+    text-align: center;
 }
-
-.textWrapper2 {
-    color: #4936bb;
-    font-size: 12px;
-    font-weight: 400;
-    left: 56px;
-    line-height: 16.8px;
-    position: relative;
-    top: 0px;
-    white-space: nowrap;
-    letter-spacing: 0;
-}
-
-.infoSection {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin-top: 20px;
-}
-
-.alignmentContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-right: 20px;
-}
-
-.inputWrapper {
-    border-bottom: none;
+/* Ensures all text and items in the description are centered appropriately */
+.div, .div2, .line {
+    align-self: center;
 }

@@ -11,14 +11,17 @@ function Loading() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('API_ENDPOINT', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ problemDescription: location.state.searchQuery })
-                });
-                const data = await response.json();
-                setLoading(false);
-                navigate('/result', { state: { data } });
+                // const response = await fetch('API_ENDPOINT', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify({ problemDescription: location.state.searchQuery })
+                // });
+                // const data = await response.json();
+                // setLoading(false);
+                // navigate('/result', { state: { data } });
+                setTimeout(() => {
+                    navigate('/result');
+                }, 3000);
             } catch (error) {
                 console.error('Failed to fetch data:', error);
             }
@@ -31,7 +34,7 @@ function Loading() {
         <div className={styles.container}>
             <Header />
             <div className={styles.content}>
-                <div className={styles.spinner}></div> {/* Ensure CSS is defined for spinner */}
+                <div className={styles.spinner}></div> { }
                 <p>입력하신 내용과 관련된 특허를 찾고 있습니다...</p>
             </div>
         </div>
@@ -39,3 +42,4 @@ function Loading() {
 }
 
 export default Loading;
+

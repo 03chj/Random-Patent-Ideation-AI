@@ -16,18 +16,24 @@ function Search() {
             <Header />
             <div className={styles.content}>
                 <img className={styles.contentLogo} alt="Logo" src="/image/logo.png" />
-                <SearchBar onSearch={handleSearch} />
-                <p className={styles.textWrapper}>예) 2차전지 / 배터리 수명 연장</p>
-                <div className={styles.infoSection}>
-                    <div className={styles.alignmentContainer}>
-                        <img className={styles.line} alt="Line1" src="/image/line1.svg" />
-                        <span>분야</span>
-                    </div>
-                    <div className={styles.alignmentContainer}>
-                        <img className={styles.line} alt="Line2" src="/image/line2.svg" />
-                        <span>문제 상황</span>
+                <div className={styles.contentText}>
+                    <SearchBar onSearch={handleSearch} />
+                    <div className={styles.infoSection}>
+                        <p className={styles.textWrapper}>예) 2차전지 / 배터리 수명 연장</p>
+                        <div className={styles.description}>
+                            <div className={styles.alignmentContainer}>
+                                <img className={styles.line} alt="Line1" src="/image/line1.svg" />
+                                <span className={styles.div}>분야</span>
+                            </div>
+                            <div className={styles.alignmentContainer}>
+                                <img className={styles.line} alt="Line2" src="/image/line2.svg" />
+                                <span className={styles.div2}>문제 상황</span>
+                            </div>
+             vv                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   </div>
                     </div>
                 </div>
+
+
             </div>
         </div>
     );
