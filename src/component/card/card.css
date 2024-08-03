@@ -1,13 +1,13 @@
 .card-container {
-    perspective: 1000px; /* 3D 공간에서의 원근감을 주기 위해 사용 */
-    width: 500px;
-    height: 300px;
+    perspective: 800px; /* 3D 공간에서의 원근감을 주기 위해 사용 */
+    width: 400px;
+    height: 240px;
     position: relative;
-  }
+}
   
 .card {
-    width: 500px;
-    height: 400px;
+    width: 400px;
+    height: 320px;
     position: relative;
     transform-style: preserve-3d; /* 자식 요소들이 3D 공간에서 배치되도록 설정 */
     transition: transform 0.6s; /* 카드가 뒤집힐 때의 애니메이션 */
@@ -17,14 +17,14 @@
   .card-back {
     backface-visibility: hidden; /* 뒷면이 보이지 않도록 설정 */
     position: absolute;
-    top: 15px;
+    top: 12px;
     left: 0px;
-    border-radius: 8px;
+    border-radius: 6px;
     background-color: #fff;
     border: 1px solid #d9d9d9;
     box-sizing: border-box;
-    width: 500px;
-    height: 400px;
+    width: 400px;
+    height: 320px;
   }
   
   .card-back {
@@ -45,36 +45,36 @@
 
 .link-button {
     position: absolute;
-    top: 350px;
-    right: 80px;
-    width: 20px;
-    height: 20px;
+    top: 280px;
+    right: 64px;
+    width: 16px;
+    height: 16px;
     overflow: hidden;
  }
 
  .flip-button {
     position: absolute;
-    top: 347px;
-    right: 40px;
-    width: 20px;
-    height: 20px;
+    top: 280px;
+    right: 32px;
+    width: 16px;
+    height: 16px;
     overflow: hidden;
  }
 
  
  .text {
     position: absolute;
-    top: 108px;
-    left: 24px;
-    width: 262px;
-    height: 95px;
-    min-width: 160px;
+    top: 86px;
+    left: 15px;
+    width: 170px;
+    height: 76px;
+    min-width: 128px;
 }
 
  .title {
-    width: 450px;
+    width: 360px;
     position: relative;
-    font-size: 24px;
+    font-size: 15px;
     letter-spacing: -0.02em;
     line-height: 150%;
     font-weight: 600;
@@ -87,24 +87,24 @@
 
  .inventor {
     position: absolute;
-    top: 130px;
-    left: 5px;
+    top: 104px;
+    left: 4px;
     line-height: 140%;
     font-size: 16px;
  }
 
  .date {
     position: absolute;
-    top: 100px;
-    left: 5px;
-    line-height: 44px;
+    top: 80px;
+    left: 4px;
+    line-height: 35px;
     font-family: Roboto;
-    font-size: 16px;
+    font-size: 13px;
 }
 
 .abstract {
-    font-size: 16px;
+    font-size: 13px;
     font-family: Roboto;
     position: absolute;
-    width: 400px;
+    width: 320px;
 }

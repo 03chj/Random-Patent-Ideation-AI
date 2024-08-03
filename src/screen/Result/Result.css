@@ -6,24 +6,24 @@
 }
 
 .cards {
-    width: 1700px;
+    width: 1250px;
     position: absolute;
     font-family: 'Inter', sans-serif;
     display: flex;
     justify-content: space-around;
-    top: 400px;
+    top: 350px;
 }
 
 .buttons-container {
     position: absolute;
-    top: 1000px;
+    top: 800px;
     width: 100%;
     display: flex;
     justify-content: center;
 }
 
 .buttons {
-    width: 600px;
+    width: 480px;
     display: flex;
     justify-content: space-around;
 }
