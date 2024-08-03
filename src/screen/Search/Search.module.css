@@ -51,14 +51,13 @@
     align-items: center;
     display: flex;
     max-width: 70%;
-    gap: 0;
     width: 100%;
     /* justify-content: space-between; */
     flex-wrap: wrap;
     /* padding: 12px 16px; */
     align-self: center;
     border: none;
-    margin-left: 30px;
+    margin-left: 35px;
 }
 
 .textWrapper {
@@ -76,6 +75,7 @@
     flex-wrap: wrap;
     align-self: center;
     white-space: nowrap;
+    margin-bottom: 3px;
 }
 
 
@@ -114,7 +114,7 @@
     align-items: center;
     text-align: center;
 }
-/* Ensures all text and items in the description are centered appropriately */
+
 .div, .div2, .line {
     align-self: center;
 }

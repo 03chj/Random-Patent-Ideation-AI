@@ -7,8 +7,26 @@ import styles from './Search.module.css';
 
 function Search() {
     const navigate = useNavigate();
-    const handleSearch = (data) => {
-        navigate('/loading', { state: { searchQuery: data } });
+
+    const handleSearch = async (searchQuery) => {
+        try {
+            navigate('/loading', { state: { searchQuery } });
+            const response = await fetch('API_ENDPOINT', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ problemDescription: searchQuery })
+            });
+            if (!response.ok) {
+                throw new Error('Failed to fetch data');
+            }
+            setTimeout(() => {
+                navigate('/result2', { state: { data } });
+            }, 3000);
+            const data = await response.json();
+            navigate('/result2', { state: { data } });
+        } catch (error) {
+            console.error('Failed to fetch data:', error);
+        }
     };
 
     return (
@@ -29,11 +47,9 @@ function Search() {
                                 <img className={styles.line} alt="Line2" src="/image/line2.svg" />
                                 <span className={styles.div2}>문제 상황</span>
                             </div>
-             vv                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   </div>
+                        </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
     );
