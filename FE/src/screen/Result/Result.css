@@ -1,0 +1,30 @@
+.cards-container {
+    display: flex;
+    justify-content: center;
+    max-width: 100%;
+    max-height: fit-content;
+}
+
+.cards {
+    width: 1250px;
+    position: absolute;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: space-around;
+    top: 350px;
+}
+
+.buttons-container {
+    position: absolute;
+    top: 800px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.buttons {
+    width: 480px;
+    display: flex;
+    justify-content: space-around;
+}
+

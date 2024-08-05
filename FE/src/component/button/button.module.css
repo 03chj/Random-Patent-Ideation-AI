@@ -1,0 +1,24 @@
+.button {
+    width: 236px;
+    position: relative;
+    border-radius: 8px;
+    background-color: #0684a1;
+    height: 55px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    box-sizing: border-box;
+    text-align: left;
+    font-size: 20px;
+    color: white;
+    font-family: Inter;
+    cursor: pointer;
+}
+
+.button:active{
+    background-color: #0b6275
+}
+

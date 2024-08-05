@@ -1,0 +1,35 @@
+.image2Icon {
+    width: 44px;
+    position: relative;
+    height: 44px;
+    object-fit: cover;
+}
+.navigationPill {
+    width: 95px;
+    border-radius: 8px;
+    height: 32px;
+}
+.navigationPillList {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+}
+.header {
+    width: 100%;
+    position: relative;
+    background-color: #fff;
+    border-bottom: 1px solid #d9d9d9;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px 32px;
+    gap: 0px 24px;
+}
+

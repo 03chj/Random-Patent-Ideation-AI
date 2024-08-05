@@ -1,0 +1,110 @@
+.card-container {
+    perspective: 800px; /* 3D 공간에서의 원근감을 주기 위해 사용 */
+    width: 400px;
+    height: 240px;
+    position: relative;
+}
+  
+.card {
+    width: 400px;
+    height: 320px;
+    position: relative;
+    transform-style: preserve-3d; /* 자식 요소들이 3D 공간에서 배치되도록 설정 */
+    transition: transform 0.6s; /* 카드가 뒤집힐 때의 애니메이션 */
+}
+  
+  .card-front,
+  .card-back {
+    backface-visibility: hidden; /* 뒷면이 보이지 않도록 설정 */
+    position: absolute;
+    top: 12px;
+    left: 0px;
+    border-radius: 6px;
+    background-color: #fff;
+    border: 1px solid #d9d9d9;
+    box-sizing: border-box;
+    width: 400px;
+    height: 320px;
+  }
+  
+  .card-back {
+    transform: rotateY(180deg);  /* 뒷면을 180도 회전 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .card.flipped {
+    transform: rotateY(180deg); /* 카드가 뒤집힐 때의 변환 설정 */
+  }
+
+ .card.shaking{
+    transform: rotateY(10deg)
+ }
+
+
+.link-button {
+    position: absolute;
+    top: 280px;
+    right: 64px;
+    width: 16px;
+    height: 16px;
+    overflow: hidden;
+ }
+
+ .flip-button {
+    position: absolute;
+    top: 280px;
+    right: 32px;
+    width: 16px;
+    height: 16px;
+    overflow: hidden;
+ }
+
+ 
+ .text {
+    position: absolute;
+    top: 86px;
+    left: 15px;
+    width: 170px;
+    height: 76px;
+    min-width: 128px;
+}
+
+ .title {
+    width: 360px;
+    position: relative;
+    font-size: 15px;
+    letter-spacing: -0.02em;
+    line-height: 150%;
+    font-weight: 600;
+    font-family: Inter;
+    color: #1e1e1e;
+    text-align: left;
+    display: inline-block;
+}
+
+
+ .inventor {
+    position: absolute;
+    top: 104px;
+    left: 4px;
+    line-height: 140%;
+    font-size: 16px;
+ }
+
+ .date {
+    position: absolute;
+    top: 80px;
+    left: 4px;
+    line-height: 35px;
+    font-family: Roboto;
+    font-size: 13px;
+}
+
+.abstract {
+    font-size: 13px;
+    font-family: Roboto;
+    position: absolute;
+    width: 320px;
+}
