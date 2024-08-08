@@ -58,7 +58,7 @@ export class AppService {
     const baseUrl =
       "http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getWordSearch";
     const url1 = "?word=" + keyword;
-    const url2 = "&numOfRows=20";
+    const url2 = "&numOfRows=10";
     const url3 = "&ServiceKey=" + this.apiKey;
 
     const url = baseUrl + url1 + url2 + url3;
@@ -78,7 +78,7 @@ export class AppService {
     const itemCount = body.items[0].item.length;
     console.log(itemCount);
 
-    for (let i = 0; i < Math.min(20, itemCount); i++) {
+    for (let i = 0; i < Math.min(10, itemCount); i++) {
       const item = body.items[0].item[i];
       result.solutions.push({
         inventionTitle: item.inventionTitle[0],
@@ -159,7 +159,7 @@ export class AppService {
       solutions: [],
     };
 
-    for (let i = 0; i < Math.min(20, solutionCount); i++) {
+    for (let i = 0; i < Math.min(10, solutionCount); i++) {
       if (await this.isProper(patents.solutions[i].explanation, issue)) {
         finalResult.solutions.push(patents.solutions[i]);
       }

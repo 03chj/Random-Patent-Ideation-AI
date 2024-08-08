@@ -21,14 +21,13 @@ function Search() {
             "낚시대 / 가격은 유지하면서 고급화시키고 싶어. 방법이 없을까??",
         }),
       });
-      console.log("done");
       if (!response.ok) {
         throw new Error("Failed to fetch data");
       }
       const data = await response.json();
-      // console.log(data);
+      console.log(data);
       sessionStorage.setItem("idea", data);
-      // setResponse(data);
+      setResponse(data);
 
       navigate("/result", { state: { data } });
     } catch (error) {
