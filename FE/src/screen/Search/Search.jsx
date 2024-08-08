@@ -11,14 +11,15 @@ function Search() {
   const { setResponse } = useContext(ResponseContext);
 
   const handleSearch = async (searchQuery) => {
-    console.log("버튼 클릭됨");
     try {
       navigate("/loading", { state: { searchQuery } });
-      console.log("query");
       const response = await fetch("https://trizolve.com/ideas", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ problemDescription: searchQuery }),
+        body: JSON.stringify({
+          problemDescription:
+            "낚시대 / 가격은 유지하면서 고급화시키고 싶어. 방법이 없을까??",
+        }),
       });
       console.log("done");
       if (!response.ok) {
