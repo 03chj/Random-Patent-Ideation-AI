@@ -12,7 +12,7 @@ function Loading() {
     const { data } = location.state || {};
     if (!data) {
       setTimeout(() => {
-        navigate("/result2", { state: { data } });
+        navigate("/result", { state: { data } });
       }, 300000);
     }
   }, [navigate, location.state]);

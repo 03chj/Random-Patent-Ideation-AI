@@ -10,16 +10,14 @@ import { ResponseContext } from "../../context/response";
 
 export const Result = () => {
   const [page, setPage] = useState(0);
-
   const navigate = useNavigate();
 
   const goToSearch = () => {
     navigate("/search");
   };
 
-  //   const { response } = useContext(ResponseContext);
-
-  const response = sessionStorage.getItem("idea");
+  const storedResponse = sessionStorage.getItem("idea");
+  const response = storedResponse ? JSON.parse(storedResponse).solutions : [];
 
   return (
     <>
@@ -30,31 +28,16 @@ export const Result = () => {
         </div>
         <div className="cards-container">
           <div className="cards">
-            <Card
-              title={response[(page * 3) % response.length].inventionTitle}
-              date={response[(page * 3) % response.length].applicationDate}
-              inventor={response[(page * 3) % response.length].applicantName}
-              abstract={response[(page * 3) % response.length].explanation}
-              url={response[(page * 3) % response.length].url}
-            ></Card>
-            <Card
-              title={response[(page * 3 + 1) % response.length].inventionTitle}
-              date={response[(page * 3 + 1) % response.length].applicationDate}
-              inventor={
-                response[(page * 3 + 1) % response.length].applicantName
-              }
-              abstract={response[(page * 3 + 1) % response.length].explanation}
-              url={response[(page * 3 + 1) % response.length].url}
-            ></Card>
-            <Card
-              title={response[(page * 3 + 2) % response.length].inventionTitle}
-              date={response[(page * 3 + 2) % response.length].applicationDate}
-              inventor={
-                response[(page * 3 + 2) % response.length].applicantName
-              }
-              abstract={response[(page * 3 + 2) % response.length].explanation}
-              url={response[(page * 3 + 2) % response.length].url}
-            ></Card>
+            {response.slice(page * 3, page * 3 + 3).map((item, index) => (
+              <Card
+                key={index}
+                title={item.inventionTitle}
+                date={item.applicationDate}
+                inventor={item.applicantName}
+                abstract={item.explanation}
+                url={item.url}
+              ></Card>
+            ))}
           </div>
         </div>
         <div className="buttons-container">
@@ -62,7 +45,8 @@ export const Result = () => {
             <Button text="검색 화면으로" handleClick={goToSearch}></Button>
             <Button
               text="다른 특허 보기"
-              handleClick={() => setPage((page) => page + 1)}
+              handleClick={() => setPage((prevPage) => prevPage + 1)}
+              disabled={page * 3 + 3 >= response.length} // Disable if no more items to show
             ></Button>
           </div>
         </div>

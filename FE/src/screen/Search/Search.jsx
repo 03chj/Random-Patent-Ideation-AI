@@ -25,8 +25,7 @@ function Search() {
         throw new Error("Failed to fetch data");
       }
       const data = await response.json();
-      console.log(data);
-      sessionStorage.setItem("idea", data);
+      sessionStorage.setItem("idea", JSON.stringify(data));
       setResponse(data);
 
       navigate("/result", { state: { data } });
