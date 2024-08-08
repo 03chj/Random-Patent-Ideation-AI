@@ -1,7 +1,7 @@
 .card-container {
     perspective: 800px; /* 3D 공간에서의 원근감을 주기 위해 사용 */
     width: 400px;
-    height: 240px;
+    height: 320px;
     position: relative;
 }
   
@@ -47,17 +47,17 @@
     position: absolute;
     top: 280px;
     right: 64px;
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
     overflow: hidden;
  }
 
  .flip-button {
     position: absolute;
-    top: 280px;
+    top: 277px;
     right: 32px;
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
     overflow: hidden;
  }
 
@@ -74,7 +74,7 @@
  .title {
     width: 360px;
     position: relative;
-    font-size: 15px;
+    font-size: 16px;
     letter-spacing: -0.02em;
     line-height: 150%;
     font-weight: 600;
@@ -89,7 +89,7 @@
     position: absolute;
     top: 104px;
     left: 4px;
-    line-height: 140%;
+    line-height: 160%;
     font-size: 16px;
  }
 
@@ -107,4 +107,12 @@
     font-family: Roboto;
     position: absolute;
     width: 320px;
+}
+
+.inventor-text, .date-text{
+   font-size: 18px;
+}
+
+.abstract-text{
+   font-size: 16px;
 }

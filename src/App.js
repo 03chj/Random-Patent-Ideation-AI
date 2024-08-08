@@ -5,9 +5,11 @@ import Search from './screen/Search/Search';
 import Loading from './screen/Loading/Loading';
 import { Result } from './screen/Result/Result';
 import { Result2 } from './screen/Result/Result2';
+import { ResponseProvider } from './context/response';
 
 function App() {
   return (
+    <ResponseProvider>
     <Router>
       <div>
         <Routes>
@@ -19,6 +21,7 @@ function App() {
         </Routes>
       </div>
     </Router>
+    </ResponseProvider>
   );
 }
 

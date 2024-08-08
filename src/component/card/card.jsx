@@ -42,13 +42,13 @@ export const Card = ({
                 <div className='card-front'>
                     <div className='text'>
                         <div className='title'>
-                            <h2>{title}</h2>
+                            <h2 className='title-text'>{title}</h2>
                         </div>
                         <div className='inventor'> 
-                            <p>{inventor}</p>
+                            <p className='inventor-text'>{inventor}</p>
                         </div>
                         <div className='date'>
-                            <p>{date}</p>
+                            <p className='date-text'>{date}</p>
                         </div>
                     </div>
                     <div className='buttons'>
@@ -64,7 +64,7 @@ export const Card = ({
                 </div>
                 <div className='card-back'>
                     <div className='abstract'>
-                        <p>{abstract}</p>
+                        <p className='abstract-text'>{abstract}</p>
                     </div>
                     <div className='flip-button'>
                         <img alt="초록 보기" src="/image/reply.svg" onClick={()=>{setIsFlipped((flipped)=>!flipped)}}/>

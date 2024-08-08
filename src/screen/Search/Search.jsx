@@ -1,17 +1,20 @@
 // src/screen/Search/Search.jsx
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '../../component/header/header';
 import SearchBar from '../../component/searchbar/searchbar';
 import styles from './Search.module.css';
+import { ResponseContext } from '../../context/response';
 
 function Search() {
     const navigate = useNavigate();
+    const { setResponse } = useContext(ResponseContext);
 
     const handleSearch = async (searchQuery) => {
+        console.log('버튼 클릭됨')
         try {
             navigate('/loading', { state: { searchQuery } });
-            const response = await fetch('API_ENDPOINT', {
+            const response = await fetch('https://trizolve.com/ideas', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ problemDescription: searchQuery })
@@ -19,11 +22,11 @@ function Search() {
             if (!response.ok) {
                 throw new Error('Failed to fetch data');
             }
-            setTimeout(() => {
-                navigate('/result2', { state: { data } });
-            }, 3000);
             const data = await response.json();
-            navigate('/result2', { state: { data } });
+            console.log(data);
+            sessionStorage.setItem('idea',data);
+            // setResponse(data);
+            navigate('/result', { state: { data } });
         } catch (error) {
             console.error('Failed to fetch data:', error);
         }
