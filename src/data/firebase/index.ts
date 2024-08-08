@@ -6,7 +6,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const firebaseConfig = {
-    apiKey: process.env.FIREBASE_API,
+    apiKey: process.env.REACT_APP_FIREBASE_API,
     authDomain: 'trizolve-2e830.firebaseapp.com',
     projectId: 'trizolve-2e830',
     storageBucket: 'trizolve-2e830.appspot.com',
