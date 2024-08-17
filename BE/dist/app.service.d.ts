@@ -19,4 +19,5 @@ export declare class AppService {
     selectPatents(patents: any, issue: string): Promise<{
         solutions: any[];
     }>;
+    summarizeText(text: string): Promise<string>;
 }
