@@ -9,13 +9,20 @@ function Loading() {
   const location = useLocation();
 
   useEffect(() => {
-    const { data } = location.state || {};
-    if (!data) {
-      setTimeout(() => {
-        navigate("/result", { state: { data } });
-      }, 300000);
+    if(!location.state) {
+      navigate("/search", {replace: true});
     }
-  }, [navigate, location.state]);
+  })
+
+  // useEffect(() => {
+  //   const { data } = location.state || {};
+  //   if (!data) {
+  //     setTimeout(() => {
+  //       navigate("/result", { state: { data } });
+  //     }, 30000);
+  //   }
+  //   console.log(location.state)
+  // }, [navigate, location.state]);
 
   return (
     <div className={styles.container}>
