@@ -1,7 +1,7 @@
 import { HttpService } from "@nestjs/axios";
 import { Injectable } from "@nestjs/common";
 import OpenAI from "openai";
-import { lastValueFrom } from "rxjs";
+import { last, lastValueFrom } from "rxjs";
 import { parseStringPromise } from "xml2js";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -42,6 +42,7 @@ export class AppService {
     const sanitizedQuery = query.replace(/\s+/g, "");
     console.log("query = " + sanitizedQuery);
 
+    //키워드 검색으로 특허 50개(전문 url 포함) 가져오기만 함.
     const patents = await this.keywordSearch(sanitizedQuery);
 
     const result = await this.selectPatents(patents, issue);
@@ -58,7 +59,7 @@ export class AppService {
     const baseUrl =
       "http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getWordSearch";
     const url1 = "?word=" + keyword;
-    const url2 = "&numOfRows=10";
+    const url2 = "&numOfRows=50";
     const url3 = "&ServiceKey=" + this.apiKey;
 
     const url = baseUrl + url1 + url2 + url3;
@@ -76,18 +77,20 @@ export class AppService {
     console.log(result);
 
     const itemCount = body.items[0].item.length;
-    console.log(itemCount);
+    console.log("patents from kipris:", itemCount);
 
-    for (let i = 0; i < Math.min(10, itemCount); i++) {
+    for (let i = 0; i < Math.min(50, itemCount); i++) {
       const item = body.items[0].item[i];
+
       result.solutions.push({
         inventionTitle: item.inventionTitle[0],
-        applicationDate: item.applicationDate[0],
+        applicationDate: item.applicationDate[0], //출원일자
         applicantName: item.applicantName[0],
-        explanation: item.astrtCont[0], //일단 초록.
-        url: await this.getFullTextPDF(item.applicationNumber[0]), //출원번호로 url 가져오기
+        explanation: item.astrtCont[0], //초록
+        url: await this.getFullTextPDF(item.applicationNumber[0]), //출원번호로 전문 PDF 다운로드 url 가져오기
       });
     }
+
 
     return result;
   }
@@ -109,9 +112,10 @@ export class AppService {
       .map((keyword) => keyword.trim())
       .filter((keyword) => keyword.length > 0);
   }
+
   //특허의 초록과 문제 상황 설명이 GPT에게 들어가면 가능한지 판단: true/false
   async isProper(astrtCont: string, issue: string) {
-    const ask = `\"${astrtCont}\"라는 내용의 특허 기술이 ${issue}라는 문제의 해결방안이 될 수 있을까? YES 또는 NO로 답변해줘. \n ###출력예시1### YES ###출력예시2### NO `;
+    const ask = `\"${astrtCont}\"라는 내용의 특허 기술이 ${issue}라는 문제의 해결방안이 될 수 있을까? YES 또는 NO로 답변해줘. \n ###출력예시1: YES ###출력예시2: NO `;
 
     const stream = await openai.chat.completions.create({
       model: "gpt-4o-mini",
@@ -146,7 +150,23 @@ export class AppService {
     const dictType = await parseStringPromise(content);
     const body = dictType.response.body[0];
 
-    const pdf_URL = String(body.item[0].path);
+    let pdf_URL = String(body.item[0].path);
+
+    //만약 공개전문 url이 없을 경우 공고전문 url 가져오기
+    if (pdf_URL === "undefined"){
+      const newBaseUrl =
+      "http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getAnnFullTextInfoSearch";
+      const newUrl1 = "?applicationNumber=" + applicationNumber;
+      const newUrl2 = "&ServiceKey=" + this.apiKey;
+      const newUrl = newBaseUrl + newUrl1 + newUrl2;
+
+      const newResponse = await lastValueFrom(this.httpService.get(newUrl));
+      const newContent = newResponse.data;
+      const newDictType = await parseStringPromise(newContent);
+      const newBody = newDictType.response.body[0];
+
+      pdf_URL = String(newBody.item[0].path);
+    }
 
     return pdf_URL;
   }
@@ -159,13 +179,45 @@ export class AppService {
       solutions: [],
     };
 
-    for (let i = 0; i < Math.min(10, solutionCount); i++) {
-      if (await this.isProper(patents.solutions[i].explanation, issue)) {
-        finalResult.solutions.push(patents.solutions[i]);
+    const checks = patents.solutions.map((solution, index) =>
+      this.isProper(solution.explanation, issue).then(async(isProper)=>{
+        if (isProper){
+          let explanation = solution.explanation;
+          if(explanation.length >= 240){
+            explanation = await this.summarizeText(explanation);
+            solution.explanation = explanation;
+          }
+          return solution;
+        }
+        return null;
       }
-    }
+      )
+    );
 
-    console.log(finalResult.solutions.length);
+    const results = await Promise.all(checks);
+
+    results.forEach(solution => {
+      if (solution){
+        finalResult.solutions.push(solution);
+      }
+    });
+    
+
+    console.log("선별된 특허 개수: ", finalResult.solutions.length);
     return finalResult;
+  }
+
+  //특허 초록 240자 이내로 요약
+  async summarizeText(text: string): Promise<string>{
+    const prompt = `${text}\n###\n특허에 대한 위의 설명을 공백 포함 240자 이내로 요약해줘.`;
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [{ role: "user", content: prompt}],
+    });
+
+    const summary = response.choices[0].message.content.trim();
+    console.log("특허 초록 요약: ", summary);
+
+    return summary;
   }
 }

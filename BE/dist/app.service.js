@@ -63,7 +63,7 @@ let AppService = class AppService {
         };
         console.log(result);
         const itemCount = body.items[0].item.length;
-        console.log(itemCount);
+        console.log("patents from kipris:", itemCount);
         for (let i = 0; i < Math.min(50, itemCount); i++) {
             const item = body.items[0].item[i];
             result.solutions.push({
@@ -92,7 +92,7 @@ let AppService = class AppService {
             .filter((keyword) => keyword.length > 0);
     }
     async isProper(astrtCont, issue) {
-        const ask = `\"${astrtCont}\"라는 내용의 특허 기술이 ${issue}라는 문제의 해결방안이 될 수 있을까? YES 또는 NO로 답변해줘. \n ###출력예시1### YES ###출력예시2### NO `;
+        const ask = `\"${astrtCont}\"라는 내용의 특허 기술이 ${issue}라는 문제의 해결방안이 될 수 있을까? YES 또는 NO로 답변해줘. \n ###출력예시1: YES ###출력예시2: NO `;
         const stream = await openai.chat.completions.create({
             model: "gpt-4o-mini",
             messages: [{ role: "user", content: ask }],
@@ -121,7 +121,18 @@ let AppService = class AppService {
         const content = response.data;
         const dictType = await (0, xml2js_1.parseStringPromise)(content);
         const body = dictType.response.body[0];
-        const pdf_URL = String(body.item[0].path);
+        let pdf_URL = String(body.item[0].path);
+        if (pdf_URL === "undefined") {
+            const newBaseUrl = "http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getAnnFullTextInfoSearch";
+            const newUrl1 = "?applicationNumber=" + applicationNumber;
+            const newUrl2 = "&ServiceKey=" + this.apiKey;
+            const newUrl = newBaseUrl + newUrl1 + newUrl2;
+            const newResponse = await (0, rxjs_1.lastValueFrom)(this.httpService.get(newUrl));
+            const newContent = newResponse.data;
+            const newDictType = await (0, xml2js_1.parseStringPromise)(newContent);
+            const newBody = newDictType.response.body[0];
+            pdf_URL = String(newBody.item[0].path);
+        }
         return pdf_URL;
     }
     async selectPatents(patents, issue) {
@@ -130,13 +141,35 @@ let AppService = class AppService {
         const finalResult = {
             solutions: [],
         };
-        for (let i = 0; i < Math.min(50, solutionCount); i++) {
-            if (await this.isProper(patents.solutions[i].explanation, issue)) {
-                finalResult.solutions.push(patents.solutions[i]);
+        const checks = patents.solutions.map((solution, index) => this.isProper(solution.explanation, issue).then(async (isProper) => {
+            if (isProper) {
+                let explanation = solution.explanation;
+                if (explanation.length >= 240) {
+                    explanation = await this.summarizeText(explanation);
+                    solution.explanation = explanation;
+                }
+                return solution;
             }
-        }
-        console.log(finalResult.solutions.length);
+            return null;
+        }));
+        const results = await Promise.all(checks);
+        results.forEach(solution => {
+            if (solution) {
+                finalResult.solutions.push(solution);
+            }
+        });
+        console.log("선별된 특허 개수: ", finalResult.solutions.length);
         return finalResult;
+    }
+    async summarizeText(text) {
+        const prompt = `${text}\n###\n특허에 대한 위의 설명을 공백 포함 240자 이내로 요약해줘.`;
+        const response = await openai.chat.completions.create({
+            model: "gpt-4o-mini",
+            messages: [{ role: "user", content: prompt }],
+        });
+        const summary = response.choices[0].message.content.trim();
+        console.log("특허 초록 요약: ", summary);
+        return summary;
     }
 };
 exports.AppService = AppService;
