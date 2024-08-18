@@ -7,7 +7,13 @@ function SearchBar({ onSearch }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        onSearch(input);
+        const regCondition = /^(?!\s*$)(?=\S)(?:[^\s\/]+)\/(?:[^\s\/]+)$/;
+        if (regCondition.test(input)){
+            onSearch(input);
+        }
+        else {
+            window.alert('입력 양식을 맞춰주세요.')
+        }
     };
 
     return (

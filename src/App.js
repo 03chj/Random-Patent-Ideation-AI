@@ -5,6 +5,7 @@ import Search from "./screen/Search/Search";
 import Loading from "./screen/Loading/Loading";
 import { Result } from "./screen/Result/Result";
 import { ResponseProvider } from "./context/response";
+import NotFoundPage from "./screen/NotFound/NotFound";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="/search" element={<Search />} />
             <Route path="/loading" element={<Loading />} />
             <Route path="/result" element={<Result />} />
+            <Route path="*" element={<NotFoundPage />}/>
           </Routes>
         </div>
       </Router>

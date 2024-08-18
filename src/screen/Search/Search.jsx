@@ -8,7 +8,7 @@ import { ResponseContext } from "../../context/response";
 
 function Search() {
   const navigate = useNavigate();
-  const { setResponse } = useContext(ResponseContext);
+  // const { setResponse } = useContext(ResponseContext);
 
   const handleSearch = async (searchQuery) => {
     try {
@@ -26,7 +26,7 @@ function Search() {
       }
       const data = await response.json();
       sessionStorage.setItem("idea", JSON.stringify(data));
-      setResponse(data);
+      // setResponse(data);
 
       navigate("/result", { state: { data } });
     } catch (error) {

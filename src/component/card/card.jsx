@@ -6,7 +6,8 @@ export const Card = ({
     inventor='출원인',
     date='출원날짜',
     abstract='이 특허는 이렇고 저렇다',
-    url='www.naver.com'
+    url='www.naver.com',
+    page
 }) => {
     const [isFlipped, setIsFlipped] = useState(false);
 
@@ -35,6 +36,10 @@ export const Card = ({
     //         cancelAnimationFrame(animationFrameId)
     //     }
     // }, [])
+
+    useEffect(() => {
+        setIsFlipped(false);
+    }, [page]);
 
     return(
         <div className='card-container'>
