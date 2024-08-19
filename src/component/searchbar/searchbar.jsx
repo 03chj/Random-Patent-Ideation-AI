@@ -1,20 +1,21 @@
-// src/component/searchbar/searchbar.jsx
-import React, { useState } from 'react';
-import styles from './searchbar.module.css';
+import React, { useState } from 'react'
+import styles from './searchbar.module.css'
 
 function SearchBar({ onSearch }) {
-    const [input, setInput] = useState('');
+    const [input, setInput] = useState('')
 
     const handleSubmit = (event) => {
-        event.preventDefault();
-        const regCondition = /^(?!\s*$)(?=\S)(?:[^\s\/]+)\/(?:[^\s\/]+)$/;
-        if (regCondition.test(input)){
-            onSearch(input);
+        event.preventDefault()
+        if (input.trim() === '') {
+            window.alert('내용을 입력해 주세요')
+            return
         }
-        else {
-            window.alert('입력 양식을 맞춰주세요.')
+        if (!input.includes('/')) {
+            window.alert('입력 양식을 맞춰주세요')
+        } else {
+            onSearch(input)
         }
-    };
+    }
 
     return (
         <form className={styles.searchForm} onSubmit={handleSubmit}>
@@ -31,7 +32,7 @@ function SearchBar({ onSearch }) {
                 </button>
             </div>
         </form>
-    );
+    )
 }
 
-export default SearchBar;
+export default SearchBar

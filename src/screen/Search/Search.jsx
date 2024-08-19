@@ -1,5 +1,4 @@
-// src/screen/Search/Search.jsx
-import React, { useContext } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Header } from '../../component/header/header'
 import SearchBar from '../../component/searchbar/searchbar'
@@ -16,12 +15,12 @@ function Search() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    problemDescription:
-                        '낚시대 / 가격은 유지하면서 고급화시키고 싶어. 방법이 없을까??',
+                    problemDescription: searchQuery,
                 }),
             })
             if (!response.ok) {
-                throw new Error('Failed to fetch data')
+                const errorData = await response.json()
+                throw new Error(errorData.message || 'Failed to fetch data')
             }
             const data = await response.json()
             sessionStorage.setItem('idea', JSON.stringify(data))
@@ -30,6 +29,8 @@ function Search() {
             navigate('/result', { state: { data } })
         } catch (error) {
             console.error('Failed to fetch data:', error)
+            alert(error.message)
+            navigate('/search')
         }
     }
 

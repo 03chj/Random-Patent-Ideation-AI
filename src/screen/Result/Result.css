@@ -1,9 +1,9 @@
 .result-container {
     display: grid;
     grid-template-areas:
-        "message"
-        "cards-container"
-        "buttons-container";
+        'message'
+        'cards-container'
+        'buttons-container';
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 2fr 1fr;
     gap: 16px;
@@ -47,7 +47,7 @@
     justify-content: space-around;
 }
 
-@media screen and (max-width: 1250px){
+@media screen and (max-width: 1200px) {
     .cards {
         display: flex;
         align-items: center;
@@ -55,8 +55,8 @@
         justify-content: space-between;
         height: 1000px;
         width: 320px;
-    }  
+    }
     .buttons-container {
         top: 1450px;
     }
-}   
+}
