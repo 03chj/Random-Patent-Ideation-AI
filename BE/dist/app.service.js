@@ -15,7 +15,6 @@ const common_1 = require("@nestjs/common");
 const openai_1 = require("openai");
 const rxjs_1 = require("rxjs");
 const xml2js_1 = require("xml2js");
-const FIRST_N_WORDS = 1;
 const openai = new openai_1.default({ apiKey: process.env.OPENAI_API_KEY });
 let AppService = class AppService {
     constructor(httpService) {
@@ -41,7 +40,7 @@ let AppService = class AppService {
         const query = issue_keyword + "AND" + "!" + field;
         const sanitizedQuery = query.replace(/\s+/g, "");
         console.log("query = " + sanitizedQuery);
-        const patents = await this.keywordSearch(field, sanitizedQuery);
+        const patents = await this.keywordSearch(sanitizedQuery);
         const result = await this.selectPatents(patents, issue);
         return result;
     }
@@ -49,7 +48,7 @@ let AppService = class AppService {
         const [field, issue] = await input.split("/");
         return { field, issue };
     }
-    async keywordSearch(field, keyword) {
+    async keywordSearch(keyword) {
         const baseUrl = "http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getWordSearch";
         const url1 = "?word=" + keyword;
         const url2 = "&numOfRows=50";
@@ -65,14 +64,8 @@ let AppService = class AppService {
         console.log(result);
         const itemCount = body.items[0].item.length;
         console.log("patents from kipris:", itemCount);
-        const fieldIPC = await this.findFieldIPC(field);
         for (let i = 0; i < Math.min(50, itemCount); i++) {
             const item = body.items[0].item[i];
-            const slicedIPC = String(item.ipcNumber).slice(0, FIRST_N_WORDS);
-            console.log(slicedIPC);
-            if (slicedIPC === fieldIPC) {
-                continue;
-            }
             result.solutions.push({
                 inventionTitle: item.inventionTitle[0],
                 applicationDate: item.applicationDate[0],
@@ -144,7 +137,7 @@ let AppService = class AppService {
     }
     async selectPatents(patents, issue) {
         const solutionCount = patents.solutions.length;
-        console.log(`동일 IPC 제외한 특허 개수: ${solutionCount}`);
+        console.log(`Number of solutions: ${solutionCount}`);
         const finalResult = {
             solutions: [],
         };
@@ -177,40 +170,6 @@ let AppService = class AppService {
         const summary = response.choices[0].message.content.trim();
         console.log("특허 초록 요약: ", summary);
         return summary;
-    }
-    async findFieldIPC(field) {
-        const baseUrl = "http://plus.kipris.or.kr/kipo-api/kipi/patUtiModInfoSearchSevice/getWordSearch";
-        const url1 = "?word=" + field;
-        const url2 = "&numOfRows=50";
-        const url3 = "&ServiceKey=" + this.apiKey;
-        const url = baseUrl + url1 + url2 + url3;
-        const response = await (0, rxjs_1.lastValueFrom)(this.httpService.get(url));
-        const content = response.data;
-        const dictType = await (0, xml2js_1.parseStringPromise)(content);
-        const body = dictType.response.body[0];
-        const result = [];
-        const itemCount = body.items[0].item.length;
-        console.log("findFieldIPC 함수");
-        for (let i = 0; i < Math.min(50, itemCount); i++) {
-            const item = body.items[0].item[i];
-            const slicedIPC = String(item.ipcNumber).slice(0, FIRST_N_WORDS);
-            result.push(slicedIPC);
-        }
-        console.log(result);
-        const frequencyMap = new Map();
-        result.forEach((item) => {
-            frequencyMap.set(item, (frequencyMap.get(item) || 0) + 1);
-        });
-        let mostFrequentItem = null;
-        let maxFrequency = 0;
-        frequencyMap.forEach((count, item) => {
-            if (count > maxFrequency) {
-                mostFrequentItem = item;
-                maxFrequency = count;
-            }
-        });
-        console.log(`가장 많이 나온 문자열: ${mostFrequentItem}, 빈도: ${maxFrequency}`);
-        return mostFrequentItem;
     }
 };
 exports.AppService = AppService;

@@ -10,7 +10,7 @@ export declare class AppService {
         field: string;
         issue: string;
     }>;
-    keywordSearch(field: string, keyword: string): Promise<{
+    keywordSearch(keyword: string): Promise<{
         solutions: any[];
     }>;
     openai(prompt: string): Promise<string[]>;
@@ -20,5 +20,4 @@ export declare class AppService {
         solutions: any[];
     }>;
     summarizeText(text: string): Promise<string>;
-    findFieldIPC(field: string): Promise<string>;
 }
